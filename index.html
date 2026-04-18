@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Laberinto del Contenedor</title>
+<style>
+    body {
+        background: #f2f2f2;
+        font-family: monospace;
+        display: flex;
+        justify-content: center;
+        padding-top: 20px;
+    }
+    pre {
+        font-size: 18px;
+        line-height: 18px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #ccc;
+    }
+</style>
+</head>
+<body>
+
+<pre id="maze"></pre>
+
+<script>
+// Laberinto base
+let maze = [
+"#########################",
+"#S....#.........#......D#",
+"#.#.#.#.#####.#.#.#######",
+"#.#.#.#.....#.#.#.......#",
+"#.#.#.#####.#.#.#####.#.#",
+"#...#.....#.#...#A..#.#.#",
+"###.#####.#.#####.#.#.#.#",
+"#...#...#.#.....#.#.#...#",
+"#.###.#.#.#####.#.#.###.#",
+"#.#...#.#.....#.#...#...#",
+"#.#.###.#####.#.###.#.###",
+"#.#...I.....#...#R..#...#",
+"#########################"
+];
+
+let playerX = 1;
+let playerY = 1;
+
+function drawMaze() {
+    let output = "";
+    for (let y = 0; y < maze.length; y++) {
+        for (let x = 0; x < maze[y].length; x++) {
+            if (x === playerX && y === playerY) {
+                output += "📦"; // Contenedor
+            } else {
+                output += maze[y][x];
+            }
+        }
+        output += "\n";
+    }
+    document.getElementById("maze").textContent = output;
+}
+
+function move(dx, dy) {
+    let newX = playerX + dx;
+    let newY = playerY + dy;
+    let cell = maze[newY][newX];
+
+    if (cell === "#") return; // muro
+
+    if (cell === "A") { alert("🚧 Aduanas: ¡documentación incompleta!"); return; }
+    if (cell === "I") { alert("🔍 Inspección: revisan el contenedor"); return; }
+    if (cell === "R") { alert("⚠️ Riesgo logístico: retraso inesperado"); return; }
+
+    if (cell === "D") {
+        alert("🎉 ¡Has llegado al destino final!");
+    }
+
+    playerX = newX;
+    playerY = newY;
+    drawMaze();
+}
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp") move(0, -1);
+    if (e.key === "ArrowDown") move(0, 1);
+    if (e.key === "ArrowLeft") move(-1, 0);
+    if (e.key === "ArrowRight") move(1, 0);
+});
+
+drawMaze();
+</script>
+
+</body>
+</html>
+
